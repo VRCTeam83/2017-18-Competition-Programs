@@ -27,31 +27,60 @@ void pre_auton()
 {
 
 }
-#define MOBILEGOALDOWNTIME 500
-#define MOBILEGOALTIME 100
-#define SQUARE3 1990
+#define MOBILEGOALTIME 500
+#define MOBILEGOALEXTRATIME 100
+#define SQUARE2 2250
 #define EXTRATIME 400
 #define TURN45 400
-//TURN45 is not accurate
-#define SPEEDFORWARD 127
-#define SPEEDBACK -127
+#define SCISSORTIME 1000
+#define SLIDERTIME 5000
+//TURN45 is only kind of accurate
+#define SPEEDFORWARD 127 //this closes the claw if you use it for the claw
+#define SPEEDBACK -127 //this opens the claw if you use it for the claw
+#define CLAWOPENTIME 2000
 
 task autonomous()
 {
-	motor[leftDrive] = 127;
-	motor[rightDrive] = 127;
-	motor[mobileLeft] =-127;
-	motor[mobileRight] =-127;
-	wait1Msec(SQUARE3);
-	motor[mobileLeft] =0;
-	motor[mobileRight] =0;
-	motor[leftDrive]=0;
-	motor[rightDrive]=0;
-	wait1Msec(500);
-	liftMobileGoal(MOBILEGOALTIME, 127);
-	go_back(SQUARE3+EXTRATIME);
-	liftMobileGoal(MOBILEGOALDOWNTIME, -127);
-	go_back(1000);
+						//first auton
+						liftMobileGoal(MOBILEGOALTIME, -127);
+						go_forth(SQUARE2+EXTRATIME+EXTRATIME);
+						openClaw(SPEEDFORWARD);
+						scissorLift(SCISSORTIME);
+						moveSlider(SLIDERTIME, 127);
+						openClaw(SPEEDBACK);
+						stopClaw(CLAWOPENTIME); //this part works 5/5 as long as you set the robot up right.
+						liftMobileGoal(MOBILEGOALTIME, 127);
+						go_back(SQUARE2+EXTRATIME+EXTRATIME);
+						turn(TURN45*4);
+						liftMobileGoal(MOBILEGOALTIME, -127);
+						go_forth(EXTRATIME*2);
+						go_back(EXTRATIME*2); //this part works 5/5 as long as you set the robot up right.
+
+
+						////second auton
+						//liftMobileGoal(MOBILEGOALTIME, -127);
+						//go_forth(SQUARE2+EXTRATIME+EXTRATIME);
+						//openClaw(SPEEDFORWARD);
+						//scissorLift(SCISSORTIME);
+						//moveSlider(SLIDERTIME);
+						//openClaw(SPEEDBACK);
+						//stopClaw(CLAWOPENTIME);
+
+	//moveSlider(SLIDERTIME);
+	//motor[leftDrive] = 127;
+	//motor[rightDrive] = 127;
+	//motor[mobileLeft] =-127;
+	//motor[mobileRight] =-127;
+	//wait1Msec(SQUARE3);
+	//motor[mobileLeft] =0;
+	//motor[mobileRight] =0;
+	//motor[leftDrive]=0;
+	//motor[rightDrive]=0;
+	//wait1Msec(500);
+	//liftMobileGoal(MOBILEGOALTIME, 127);
+	//go_back(SQUARE3+EXTRATIME);
+	//liftMobileGoal(MOBILEGOALDOWNTIME, -127);
+	//go_back(1000);
 	//liftMobileGoal(MOBILEGOALTIME);
 	//go_forth(SQUARE3+EXTRATIME);
 	////turn(500);
